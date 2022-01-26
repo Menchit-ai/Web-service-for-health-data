@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+
+<script>
+    if(!sessionStorage.getItem("key_auth")){
+        alert("You need to be logged.");
+        window.location.replace("https://gaalactic.fr/~menchit_SEV5204E/frontend/login.html");
+    };
+    if(sessionStorage.getItem("type") === "doctor"){
+        alert("You need to be logged as a patient.");
+        window.location.replace("https://gaalactic.fr/~menchit_SEV5204E/frontend/login.html");
+    };
+</script>
+
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="css/style.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap" rel="stylesheet">
+    </head>
+    <div class="header-basic">
+    <header>
+        <ul>
+            <li><a href="homepage.html">Homepage</a></li>
+            <li><a href="doctor_profile.html">Doctor</a>
+                <ul>
+                    <li><a href="doctor_profile.html">My profile</a></li>
+                    <li><a href="list_of_patients.html">My patients</a></li>
+                    <li><a href="new_patients.html">New patients</a></li>
+                </ul>
+            </li>
+            <li><a href="patient_profile.html">Patient</a>
+                <ul>
+                    <li><a href="patient_profile.html">My profile</a></li>
+                    <li><a href="patient_data.html">My data</a></li>
+                    <li><a href="patient_add_data.html">Add data</a></li>
+                </ul>
+            </li>
+            <li style="float:right" class="active"><a href="login.html">Log in</a></li>
+            <li style="float:right"><a href="register.html">Register</a></li>
+        </ul>
+    </header>
+    </div>
+    <body>
+        <h2 style="text-align: center;margin-bottom: 20px;">Try to fill as much informations as possible</h2>
+        <form method="post" name="send_data" style="width: auto;display: flex;flex-direction: column;">
+            <div class="bloc">
+                <div>
+                    <label for="weight"><b>Your weight</b></label>
+                    <input type="number" placeholder="Weight" id="weight" required>
+                </div>
+                <div>
+                    <label for="chest"><b>Your chest</b></label>
+                    <input type="number" placeholder="Chest" id="chest">
+                </div>
+                <div>
+                    <label for="abdomen"><b>Your abdomen</b></label>
+                    <input type="number" placeholder="Abdomen" id="abdomen">
+                </div>
+                <div>
+                    <label for="hip"><b>Your hip</b></label>
+                    <input type="number" placeholder="Hip" id="hip">
+                </div>
+                <div>
+                    <label for="heartbeat"><b>Your heartbeat</b></label>
+                    <input type="number" placeholder="Heartbeat" id="heartbeat">
+                </div>
+            </div>
+        
+            <button type="submit" value="submit_data" style="
+            width: auto;
+            margin-left: auto;
+            margin-right: auto;">Submit datas</button>
+            </div>
+        </form>
+        <div class="footer-basic">
+            <footer>
+                <ul class="list-inline">
+                    <li class="list-inline-item"><a href="homepage.html">Home</a></li>
+                </ul>
+                <p class="copyright">Thomas Menchi & Adrien Philippe © 2022</p>
+            </footer>
+        </div>
+    </body>
+</html>
+
+<script>
+    var form = document.forms.namedItem("send_data");
+    form.addEventListener('submit', function(ev){
+        ev.preventDefault();
+        
+        url = "https://gaalactic.fr/~menchit_SEV5204E/ws/projet?action=create_data";
+        var data = new URLSearchParams();
+
+        if (form["weight"].value === ""){form["weight"].value = 0;}
+        if (form["chest"].value === ""){form["chest"].value = 0;}
+        if (form["abdomen"].value === ""){form["abdomen"].value = 0;}
+        if (form["hip"].value === ""){form["hip"].value = 0;}
+        if (form["heartbeat"].value === ""){form["heartbeat"].value = 0;}
+
+        data.append("Weight", form["weight"].value);
+        data.append("Chest", form["chest"].value);
+        data.append("Abdomen", form["abdomen"].value);
+        data.append("Hip", form["hip"].value);
+        data.append("Heartbeat", form["heartbeat"].value);
+
+        var headers = {
+                'Content-type': 'application/x-www-form-urlencoded',
+                'Accept' : 'application/json',
+                'X-Auth' : sessionStorage.getItem("key_auth")
+            };
+
+
+        fetch(url, {
+            method: 'POST',
+            headers: headers,
+            body: data
+        }).then(function(response) {
+            window.location.replace("https://gaalactic.fr/~menchit_SEV5204E/frontend/patient_data.html");
+        });
+
+    }, false);
+</script>
